@@ -2,7 +2,7 @@ services:
   wordpress:
     image: wordpress:latest
     volumes:
-      - wp-app:/var/www/html
+      - ../files/wp-app:/var/www/html
       - ../files/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     environment:
       WORDPRESS_DB_HOST: wp_db
@@ -31,5 +31,4 @@ services:
       start_period: 30s
 
 volumes:
-  wp_data:
-  wp-app:
+  wp_data: 

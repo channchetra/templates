@@ -2,7 +2,7 @@
   {
     "id": "autobase",
     "name": "Autobase",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "description": "Autobase for PostgreSQL® is an open-source alternative to cloud-managed databases (DBaaS) such as Amazon RDS, Google Cloud SQL, Azure Database, and more.",
     "links": {
       "github": "https://github.com/vitabaks/autobase",
@@ -10,7 +10,41 @@
       "docs": "https://autobase.tech/docs"
     },
     "logo": "autobase.svg",
-    "tags": ["database", "postgres", "self-hosted", "server"]
+    "tags": ["database", "postgres", "automation", "self-hosted", "dbaas"]
+  },
+  {
+    "id": "capso",
+    "name": "Cap.so",
+    "version": "latest",
+    "description": "Cap.so is a platform for web and desktop applications with MySQL and S3 storage. It provides a complete development environment with database and file storage capabilities.",
+    "links": {
+      "github": "https://github.com/CapSoftware/Cap",
+      "website": "https://cap.so/",
+      "docs": "https://cap.so/docs/"
+    },
+    "logo": "capso.png",
+    "tags": ["web", "s3", "mysql", "development", "self-hosted"]
+  },
+  {
+    "id": "authentik",
+    "name": "Authentik",
+    "version": "2025.6.3",
+    "description": "Authentik is an open-source Identity Provider for authentication and authorization. It provides a comprehensive solution for managing user authentication, authorization, and identity federation with support for SAML, OAuth2, OIDC, and more.",
+    "links": {
+      "github": "https://github.com/goauthentik/authentik",
+      "website": "https://goauthentik.io/",
+      "docs": "https://goauthentik.io/docs/"
+    },
+    "logo": "authentik.svg",
+    "tags": [
+      "authentication",
+      "identity",
+      "sso",
+      "oidc",
+      "saml",
+      "oauth2",
+      "self-hosted"
+    ]
   },
   {
     "id": "freescout",
@@ -155,7 +189,15 @@
       "website": "https://stalw.art/",
       "docs": "https://stalw.art/docs/"
     },
-    "tags": ["email", "smtp", "jmap", "imap4", "pop3", "self-hosted", "mail-server"]
+    "tags": [
+      "email",
+      "smtp",
+      "jmap",
+      "imap4",
+      "pop3",
+      "self-hosted",
+      "mail-server"
+    ]
   },
   {
     "id": "datalens",
@@ -221,6 +263,19 @@
       "docs": "https://forgejo.org/docs/latest/"
     },
     "tags": ["self-hosted", "storage"]
+  },
+  {
+    "id": "gitlab-ce",
+    "name": "GitLab CE",
+    "version": "latest",
+    "description": "GitLab Community Edition is a free and open source platform for managing Git repositories, CI/CD pipelines, and project management.",
+    "logo": "gitlab-ce.svg",
+    "links": {
+      "github": "https://gitlab.com/gitlab-org/gitlab-ce",
+      "website": "https://gitlab.com/",
+      "docs": "https://docs.gitlab.com/ee/"
+    },
+    "tags": ["git", "ci-cd", "version-control", "project-management"]
   },
   {
     "id": "ghost",
@@ -290,7 +345,7 @@
   {
     "id": "n8n",
     "name": "n8n",
-    "version": "1.83.2",
+    "version": "1.104.0",
     "description": "n8n is an open source low-code platform for automating workflows and integrations.",
     "logo": "n8n.png",
     "links": {
@@ -626,6 +681,19 @@
     "tags": ["chatbot", "builder", "open-source"]
   },
   {
+    "id": "typecho",
+    "name": "Typecho",
+    "version": "stable",
+    "description": "Typecho 是一个轻量级的开源博客程序，基于 PHP 开发，支持多种数据库，简洁而强大。",
+    "logo": "typecho.png",
+    "links": {
+      "github": "https://github.com/typecho/typecho",
+      "website": "https://typecho.org/",
+      "docs": "http://docs.typecho.org"
+    },
+    "tags": ["blog", "cms", "php"]
+  },
+  {
     "id": "gitea",
     "name": "Gitea",
     "version": "1.22.3",
@@ -719,7 +787,7 @@
   {
     "id": "plane",
     "name": "Plane",
-    "version": "v0.25.3",
+    "version": "v0.27.1",
     "description": "Easy, flexible, open source project management software",
     "logo": "plane.png",
     "links": {
@@ -808,6 +876,19 @@
     "tags": ["open-source"]
   },
   {
+    "id": "linkding",
+    "name": "Linkding",
+    "version": "latest",
+    "description": "Linkding is a self-hosted bookmark manager with a clean and simple interface.",
+    "logo": "linkding.svg",
+    "links": {
+      "github": "https://github.com/sissbruecker/linkding",
+      "website": "https://sissbruecker.github.io/linkding/",
+      "docs": "https://github.com/sissbruecker/linkding/blob/master/docs/Options.md"
+    },
+    "tags": ["bookmark-manager", "self-hosted"]
+  },
+  {
     "id": "linkwarden",
     "name": "Linkwarden",
     "version": "2.9.3",
@@ -832,6 +913,19 @@
       "docs": "https://hi.events/docs"
     },
     "tags": ["self-hosted", "open-source", "manager"]
+  },
+  {
+    "id": "habitica",
+    "name": "Habitica",
+    "version": "latest",
+    "description": "Habitica is a free habit and productivity app that treats your real life like a game. With in-game rewards and punishments to motivate you and a strong social network to inspire you, Habitica can help you achieve your goals to become healthy and hard-working.",
+    "logo": "image.png",
+    "links": {
+      "github": "https://github.com/HabitRPG/habitica",
+      "website": "https://habitica.com/",
+      "docs": "https://habitica.fandom.com/wiki/Setting_up_Habitica_Locally"
+    },
+    "tags": ["productivity", "gamification", "habits", "self-hosted"]
   },
   {
     "id": "hoarder",
@@ -2050,6 +2144,29 @@
     "tags": ["Document Generation", "Automation", "Reporting", "Productivity"]
   },
   {
+    "id": "casdoor",
+    "name": "Casdoor",
+    "version": "latest",
+    "description": "An open-source UI-first Identity and Access Management (IAM) / Single-Sign-On (SSO) platform with web UI supporting OAuth 2.0, OIDC, SAML, CAS, LDAP, SCIM, WebAuthn, TOTP, MFA, and more.",
+    "logo": "casdoor.png",
+    "links": {
+      "github": "https://github.com/casdoor/casdoor",
+      "website": "https://casdoor.org/",
+      "docs": "https://casdoor.org/docs/overview"
+    },
+    "tags": [
+      "authentication",
+      "authorization",
+      "oauth2",
+      "oidc",
+      "sso",
+      "saml",
+      "identity-management",
+      "access-management",
+      "security"
+    ]
+  },
+  {
     "id": "changedetection",
     "name": "Change Detection",
     "version": "0.49",
@@ -2413,7 +2530,7 @@
   {
     "id": "rybbit",
     "name": "Rybbit",
-    "version": "latest",
+    "version": "v1.5.1",
     "description": "Open-source and privacy-friendly alternative to Google Analytics that is 10x more intuitive",
     "logo": "rybbit.png",
     "links": {
@@ -2466,5 +2583,612 @@
       "docs": "https://www.docuseal.com/"
     },
     "tags": ["document-signing"]
+  },
+  {
+    "id": "kutt",
+    "name": "Kutt",
+    "version": "latest",
+    "description": "Kutt is a modern URL shortener with support for custom domains. Create and edit links, view statistics, manage users, and more.",
+    "logo": "kutt.png",
+    "links": {
+      "github": "https://github.com/thedevs-network/kutt",
+      "website": "https://kutt.it",
+      "docs": "https://github.com/thedevs-network/kutt#kuttit"
+    },
+    "tags": ["link-shortener", "link-sharing"]
+  },
+  {
+    "id": "kener",
+    "name": "Kener",
+    "version": "latest",
+    "description": "Kener is an open-source status page system for monitoring and alerting. It provides a modern interface for tracking service uptime and sending notifications.",
+    "logo": "image.png",
+    "links": {
+      "github": "https://github.com/rajnandan1/kener",
+      "website": "https://kener.ing/",
+      "docs": "https://kener.ing/docs/"
+    },
+    "tags": ["monitoring", "status-page", "alerting", "self-hosted"]
+  },
+  {
+    "id": "palmr",
+    "name": "Palmr",
+    "version": "latest",
+    "description": "Palmr the open-source, self-hosted alternative to WeTransfer. Share files securely, without tracking or limitations.",
+    "logo": "palmr.png",
+    "links": {
+      "github": "https://github.com/kyantech/Palmr",
+      "website": "https://palmr.kyantech.com.br/",
+      "docs": "https://palmr.kyantech.com.br/docs/3.0-beta"
+    },
+    "tags": ["file-sharing", "self-hosted", "open-source"]
+  },
+  {
+    "id": "karakeep",
+    "name": "KaraKeep",
+    "version": "0.25.0",
+    "description": "A self-hostable bookmark-everything app (links, notes and images) with AI-based automatic tagging and full text search. Previously known as Hoarder.",
+    "logo": "karakeep.svg",
+    "links": {
+      "github": "https://github.com/karakeep-app/karakeep",
+      "website": "https://karakeep.app/",
+      "docs": "https://github.com/karakeep-app/karakeep/tree/main/docs"
+    },
+    "tags": [
+      "bookmarks",
+      "bookmark-manager",
+      "self-hosted",
+      "ai",
+      "search",
+      "notes",
+      "productivity"
+    ]
+  },
+  {
+    "id": "freshrss",
+    "name": "FreshRSS",
+    "version": "latest",
+    "description": "A free, self-hostable RSS and Atom feed aggregator. Lightweight, easy to work with, powerful, and customizable with themes and extensions.",
+    "logo": "freshrss.svg",
+    "links": {
+      "github": "https://github.com/FreshRSS/FreshRSS",
+      "website": "https://freshrss.org/",
+      "docs": "https://freshrss.github.io/FreshRSS/"
+    },
+    "tags": [
+      "rss",
+      "feed-reader",
+      "news",
+      "self-hosted",
+      "aggregator",
+      "reader"
+    ]
+  },
+  {
+    "id": "movary",
+    "name": "Movary",
+    "version": "latest",
+    "description": "Movary is a self-hosted platform for tracking and managing your watched movies using TMDB.",
+    "logo": "movary.png",
+    "links": {
+      "github": "https://github.com/leepeuker/movary",
+      "website": "https://movary.org/",
+      "docs": "https://docs.movary.org/"
+    },
+    "tags": [
+      "media",
+      "movies",
+      "movie-tracker",
+      "self-hosted",
+      "plex",
+      "jellyfin",
+      "emby",
+      "kodi",
+      "trakt",
+      "letterboxd",
+      "netflix",
+      "tmdb",
+      "statistics",
+      "rating"
+    ]
+  },
+  {
+    "id": "go-whatsapp-web-multidevice",
+    "name": "WhatsApp API Multi Device Version",
+    "version": "latest",
+    "description": "WhatsApp API Multi Device Version the open-source, self-hosted whatsapp api. Send a chat, image and voice note with your own server.",
+    "logo": "go-whatsapp-web-multidevice.svg",
+    "links": {
+      "github": "https://github.com/aldinokemal/go-whatsapp-web-multidevice",
+      "website": "https://github.com/aldinokemal/go-whatsapp-web-multidevice",
+      "docs": "https://github.com/aldinokemal/go-whatsapp-web-multidevice"
+    },
+    "tags": ["whatsapp", "self-hosted", "open-source", "api"]
+  },
+  {
+    "id": "rabbitmq",
+    "name": "RabbitMQ",
+    "version": "4.1-management",
+    "description": "RabbitMQ is an open source multi-protocol messaging broker.",
+    "logo": "rabbitmq.svg",
+    "links": {
+      "github": "https://github.com/rabbitmq/rabbitmq-server",
+      "website": "https://www.rabbitmq.com/",
+      "docs": "https://www.rabbitmq.com/documentation.html"
+    },
+    "tags": ["message-broker", "queue", "rabbitmq"]
+  },
+  {
+    "id": "ezbookkeeping",
+    "name": "EZBookkeeping",
+    "version": "latest",
+    "description": "EZBookkeeping is a self-hosted bookkeeping application that helps you manage your personal and business finances. It provides features for tracking income, expenses, accounts, and generating financial reports.",
+    "logo": "logo.png",
+    "links": {
+      "github": "https://github.com/mayswind/ezbookkeeping",
+      "website": "https://github.com/mayswind/ezbookkeeping",
+      "docs": "https://github.com/mayswind/ezbookkeeping"
+    },
+    "tags": [
+      "bookkeeping",
+      "finance",
+      "accounting",
+      "self-hosted",
+      "personal-finance",
+      "business-finance"
+    ]
+  },
+  {
+    "id": "zitadel",
+    "name": "Zitadel",
+    "version": "latest",
+    "description": "Open-source identity and access management platform with multi-tenancy, OpenID Connect, SAML, and OAuth 2.0 support.",
+    "logo": "zitadel.png",
+    "links": {
+      "github": "https://github.com/zitadel/zitadel",
+      "website": "https://zitadel.com/",
+      "docs": "https://zitadel.com/docs/"
+    },
+    "tags": [
+      "identity",
+      "authentication",
+      "authorization",
+      "iam",
+      "security",
+      "oauth",
+      "openid-connect",
+      "saml",
+      "multi-tenant"
+    ]
+  },
+  {
+    "id": "cyberchef",
+    "name": "CyberChef",
+    "version": "latest",
+    "description": "CyberChef is a web application for encryption, encoding, compression, and data analysis, developed by GCHQ.",
+    "logo": "cyberchef.svg",
+    "links": {
+      "github": "https://github.com/gchq/CyberChef",
+      "website": "https://gchq.github.io/CyberChef/",
+      "docs": "https://github.com/gchq/CyberChef/wiki"
+    },
+    "tags": ["security", "encryption", "data-analysis"]
+  },
+  {
+    "id": "filestash",
+    "name": "Filestash",
+    "version": "latest",
+    "description": "Filestash is the enterprise-grade file manager connecting your storage with your identity provider and authorisations.",
+    "logo": "filestash.svg",
+    "links": {
+      "github": "https://github.com/mickael-kerjean/filestash",
+      "website": "https://www.filestash.app/",
+      "docs": "https://www.filestash.app/docs/"
+    },
+    "tags": ["file-manager", "document-editor", "self-hosted"]
+  },
+  {
+    "id": "mazanoke",
+    "name": "MAZANOKE",
+    "version": "latest",
+    "description": "MAZANOKE is a modern, self-hosted image hosting and sharing platform. Upload, organize, and share your images with a clean and intuitive interface.",
+    "logo": "mazanoke.svg",
+    "links": {
+      "github": "https://github.com/civilblur/mazanoke",
+      "website": "https://github.com/civilblur/mazanoke",
+      "docs": "https://github.com/civilblur/mazanoke"
+    },
+    "tags": ["image-hosting", "file-sharing", "self-hosted", "media", "gallery"]
+  },
+  {
+    "id": "ihatemoney",
+    "name": "I Hate Money",
+    "version": "latest",
+    "description": "I Hate Money is a web application for managing shared expenses among groups of people. It helps you track who owes what to whom, making it easy to split bills and manage group finances.",
+    "logo": "image.png",
+    "links": {
+      "github": "https://github.com/spiral-project/ihatemoney",
+      "website": "https://ihatemoney.org/",
+      "docs": "https://ihatemoney.readthedocs.io/"
+    },
+    "tags": [
+      "budget",
+      "finance",
+      "expense-sharing",
+      "self-hosted",
+      "money-management",
+      "group-finances"
+    ]
+  },
+  {
+    "id": "searxng",
+    "name": "SearXNG",
+    "version": "latest",
+    "description": "SearXNG is a privacy-respecting, hackable metasearch engine that aggregates results from various search engines without tracking users.",
+    "logo": "searxng.png",
+    "links": {
+      "github": "https://github.com/searxng/searxng",
+      "website": "https://searxng.github.io/",
+      "docs": "https://docs.searxng.github.io/"
+    },
+    "tags": [
+      "search-engine",
+      "metasearch",
+      "privacy",
+      "self-hosted",
+      "aggregator"
+    ]
+  },
+  {
+    "id": "memos",
+    "name": "Memos",
+    "version": "latest",
+    "description": "Memos is a self-hosted, open-source note-taking application that allows you to create, organize, and share notes with ease. It provides a simple and effective solution for managing your notes from anywhere.",
+    "logo": "memos.png",
+    "links": {
+      "github": "https://github.com/usememos/memos",
+      "website": "https://www.usememos.com/",
+      "docs": "https://www.usememos.com/docs"
+    },
+    "tags": ["productivity", "notes", "bookmarks"]
+  },
+  {
+    "id": "linkstack",
+    "name": "LinkStack",
+    "version": "latest",
+    "description": "LinkStack is an open-source link-in-bio platform for sharing multiple links using a customizable landing page.",
+    "logo": "logo.svg",
+    "links": {
+      "github": "https://github.com/linkstackorg/linkstack",
+      "website": "https://linkstack.org/",
+      "docs": "https://docs.linkstack.org/"
+    },
+    "tags": ["bio", "personal", "cms", "php"]
+  },
+  {
+    "id": "opengist",
+    "name": "OpenGist",
+    "version": "1",
+    "description": "OpenGist is a self-hosted pastebin alternative.",
+    "logo": "logo.svg",
+    "links": {
+      "github": "https://github.com/thomiceli/opengist",
+      "website": "https://github.com/thomiceli/opengist",
+      "docs": "https://github.com/thomiceli/opengist"
+    },
+    "tags": ["pastebin", "code", "snippets", "self-hosted"]
+  },
+  {
+    "id": "snapp",
+    "name": "Snapp",
+    "version": "0.9-rc-020",
+    "description": "Snapp is a self-hosted screenshot sharing service with user management and authentication.",
+    "logo": "logo.png",
+    "links": {
+      "github": "https://github.com/UraniaDev/snapp",
+      "website": "https://github.com/UraniaDev/snapp",
+      "docs": "https://github.com/UraniaDev/snapp"
+    },
+    "tags": ["screenshot", "sharing", "self-hosted", "authentication"]
+  },
+  {
+    "id": "commafeed",
+    "name": "CommaFeed",
+    "version": "latest",
+    "description": "CommaFeed is an open-source feed reader and news aggregator, designed to be lightweight and extensible, with PostgreSQL as its database.",
+    "logo": "logo.svg",
+    "links": {
+      "github": "https://github.com/Athou/commafeed",
+      "website": "https://www.commafeed.com/",
+      "docs": "https://github.com/Athou/commafeed/wiki"
+    },
+    "tags": ["feed-reader", "news-aggregator", "rss"]
+  },
+  {
+    "id": "convertx",
+    "name": "ConvertX",
+    "version": "latest",
+    "description": "ConvertX is a service for converting media files, with optional user registration and file management features.",
+    "logo": "logo.png",
+    "links": {
+      "github": "https://github.com/c4illin/ConvertX",
+      "website": "https://github.com/c4illin/ConvertX",
+      "docs": "https://github.com/c4illin/ConvertX#environment-variables"
+    },
+    "tags": ["media", "converter", "ffmpeg"]
+  },
+  {
+    "id": "metube",
+    "name": "MeTube",
+    "version": "latest",
+    "description": "MeTube is a web-based YouTube downloader that allows downloading videos and audio using yt-dlp.",
+    "logo": "logo.png",
+    "links": {
+      "github": "https://github.com/alexta69/metube",
+      "website": "https://github.com/alexta69/metube",
+      "docs": "https://github.com/alexta69/metube/wiki"
+    },
+    "tags": ["downloader", "youtube", "media"]
+  },
+  {
+    "id": "pinchflat",
+    "name": "Pinchflat",
+    "version": "latest",
+    "description": "Pinchflat is a self-hosted YouTube downloader that allows you to download videos and playlists with a simple web interface.",
+    "logo": "logo.png",
+    "links": {
+      "github": "https://github.com/kieraneglin/pinchflat",
+      "website": "https://github.com/kieraneglin/pinchflat",
+      "docs": "https://github.com/kieraneglin/pinchflat"
+    },
+    "tags": ["youtube", "downloader", "media"]
+  },
+  {
+    "id": "yt-dlp-webui",
+    "name": "yt-dlp-webui",
+    "version": "latest",
+    "description": "yt-dlp-webui is a web interface for yt-dlp, allowing you to download videos and audio from various platforms with a simple web UI.",
+    "logo": "logo.ico",
+    "links": {
+      "github": "https://github.com/marcopiovanello/yt-dlp-web-ui",
+      "website": "https://github.com/marcopiovanello/yt-dlp-web-ui",
+      "docs": "https://github.com/marcopiovanello/yt-dlp-web-ui"
+    },
+    "tags": ["downloader", "youtube", "media", "webui"]
+  },
+  {
+    "id": "flaresolverr",
+    "name": "FlareSolverr",
+    "version": "latest",
+    "description": "FlareSolverr is a proxy server to bypass Cloudflare and DDoS-GUARD protection.",
+    "logo": "logo.png",
+    "links": {
+      "github": "https://github.com/FlareSolverr/FlareSolverr",
+      "website": "https://github.com/FlareSolverr/FlareSolverr",
+      "docs": "https://github.com/FlareSolverr/FlareSolverr"
+    },
+    "tags": ["proxy", "cloudflare", "bypass", "ddos-guard"]
+  },
+  {
+    "id": "neko",
+    "name": "Neko",
+    "version": "latest",
+    "description": "Neko is a self-hosted virtual browser that runs in Docker and allows you to share browser sessions with others.",
+    "logo": "logo.png",
+    "links": {
+      "github": "https://github.com/m1k1o/neko",
+      "website": "https://github.com/m1k1o/neko",
+      "docs": "https://github.com/m1k1o/neko"
+    },
+    "tags": ["browser", "virtual", "sharing", "remote"]
+  },
+  {
+    "id": "omni-tools",
+    "name": "Omni-Tools",
+    "version": "latest",
+    "description": "Omni-Tools is a collection of useful tools in a single self-hosted web application.",
+    "logo": "logo.png",
+    "links": {
+      "github": "https://github.com/iib0011/omni-tools",
+      "website": "https://github.com/iib0011/omni-tools",
+      "docs": "https://github.com/iib0011/omni-tools"
+    },
+    "tags": ["tools", "utilities", "collection", "self-hosted"]
+  },
+  {
+    "id": "openhands",
+    "name": "OpenHands",
+    "version": "0.1.1",
+    "description": "OpenHands is an open-source platform for running and managing AI agents.",
+    "logo": "image.png",
+    "links": {
+      "github": "https://github.com/all-hands-ai/OpenHands",
+      "website": "https://github.com/all-hands-ai/OpenHands",
+      "docs": "https://github.com/all-hands-ai/OpenHands"
+    },
+    "tags": ["ai", "agents", "llm", "openai"]
+  },
+  {
+    "id": "web-check",
+    "name": "Web-Check",
+    "version": "latest",
+    "description": "Web-Check is a powerful all-in-one website analyzer that provides detailed insights into any website's security, performance, and functionality.",
+    "logo": "logo.png",
+    "links": {
+      "github": "https://github.com/lissy93/web-check",
+      "website": "https://github.com/lissy93/web-check",
+      "docs": "https://github.com/lissy93/web-check"
+    },
+    "tags": ["website-analyzer", "security", "performance", "seo"]
+  },
+  {
+    "id": "dumbdrop",
+    "name": "DumbDrop",
+    "version": "latest",
+    "description": "DumbDrop is a simple, self-hosted file sharing service with no database or authentication required.",
+    "logo": "logo.svg",
+    "links": {
+      "github": "https://github.com/dumbwareio/dumbdrop",
+      "website": "https://www.dumbware.io/software/DumbDrop/",
+      "docs": "https://github.com/dumbwareio/dumbdrop"
+    },
+    "tags": ["file-sharing", "self-hosted", "simple"]
+  },
+  {
+    "id": "dumbassets",
+    "name": "DumbAssets",
+    "version": "latest",
+    "description": "DumbAssets is a simple, self-hosted asset tracking service with no database or authentication required.",
+    "logo": "logo.svg",
+    "links": {
+      "github": "https://github.com/dumbwareio/dumbassets",
+      "website": "https://www.dumbware.io/software/DumbAssets/",
+      "docs": "https://github.com/dumbwareio/dumbassets"
+    },
+    "tags": ["asset-tracking", "self-hosted", "simple"]
+  },
+  {
+    "id": "dumbpad",
+    "name": "DumbPad",
+    "version": "latest",
+    "description": "DumbPad is a simple, self-hosted notepad service with PIN protection and no database required.",
+    "logo": "logo.svg",
+    "links": {
+      "github": "https://github.com/dumbwareio/dumbpad",
+      "website": "https://www.dumbware.io/software/DumbPad/",
+      "docs": "https://github.com/dumbwareio/dumbpad"
+    },
+    "tags": ["notepad", "self-hosted", "simple"]
+  },
+  {
+    "id": "dumbbudget",
+    "name": "DumbBudget",
+    "version": "latest",
+    "description": "DumbBudget is a simple, self-hosted budget tracking service with PIN protection and no database required.",
+    "logo": "logo.svg",
+    "links": {
+      "github": "https://github.com/dumbwareio/dumbbudget",
+      "website": "https://www.dumbware.io/software/DumbBudget/",
+      "docs": "https://github.com/dumbwareio/dumbbudget"
+    },
+    "tags": ["budget", "finance", "self-hosted", "simple"]
+  },
+  {
+    "id": "tianji",
+    "name": "Tianji",
+    "version": "latest",
+    "description": "Tianji is a lightweight web analytic service and uptime monitoring tool.",
+    "logo": "logo.svg",
+    "links": {
+      "github": "https://github.com/msgbyte/tianji",
+      "website": "https://github.com/msgbyte/tianji",
+      "docs": "https://github.com/msgbyte/tianji"
+    },
+    "tags": ["analytics", "monitoring", "web", "uptime"]
+  },
+  {
+    "id": "directory-lister",
+    "name": "Directory Lister",
+    "version": "latest",
+    "description": "Directory Lister is a simple PHP application that lists the contents of any web-accessible directory and allows navigation there within.",
+    "logo": "logo.png",
+    "links": {
+      "github": "https://github.com/DirectoryLister/DirectoryLister",
+      "website": "https://www.directorylister.com/",
+      "docs": "https://docs.directorylister.com/"
+    },
+    "tags": ["file-manager", "directory-listing", "php"]
+  },
+  {
+    "id": "grimoire",
+    "name": "Grimoire",
+    "version": "latest",
+    "description": "Grimoire is a self-hosted bookmarking app designed for speed and simplicity.",
+    "logo": "logo.webp",
+    "links": {
+      "github": "https://github.com/goniszewski/grimoire",
+      "website": "https://github.com/goniszewski/grimoire",
+      "docs": "https://github.com/goniszewski/grimoire"
+    },
+    "tags": ["bookmarks", "self-hosted", "knowledge-management"]
+  },
+  {
+    "id": "keycloak",
+    "name": "Keycloak",
+    "version": "26.0",
+    "description": "Keycloak is an open source Identity and Access Management solution for modern applications and services.",
+    "logo": "keycloak.svg",
+    "links": {
+      "github": "https://github.com/keycloak/keycloak",
+      "website": "https://www.keycloak.org/",
+      "docs": "https://www.keycloak.org/documentation"
+    },
+    "tags": ["authentication", "identity", "sso", "oauth2", "openid-connect"]
+  },
+  {
+    "id": "openpanel",
+    "name": "OpenPanel",
+    "version": "latest",
+    "description": "An open-source web and product analytics platform that combines the power of Mixpanel with the ease of Plausible and one of the best Google Analytics replacements.",
+    "logo": "logo.svg",
+    "links": {
+      "github": "https://github.com/Openpanel-dev/openpanel",
+      "website": "https://openpanel.dev/",
+      "docs": "https://openpanel.dev/docs"
+    },
+    "tags": ["analytics"]
+  },
+  {
+   
+    "id": "wg-easy",
+    "name": "WG-Easy",
+    "version": "15",
+    "description": "WG-Easy is a simple and user-friendly WireGuard VPN server with a web interface for easy management.",
+    "logo": "image.png",
+    "links": {
+      "github": "https://github.com/wg-easy/wg-easy",
+      "website": "https://wg-easy.github.io/",
+      "docs": "https://github.com/wg-easy/wg-easy/wiki"
+    },
+    "tags": ["vpn", "wireguard", "networking"]
+  },
+  {
+    "id": "open_notebook",
+    "name": "Open Notebook",
+    "version": "latest",
+    "description": "Open Notebook with SurrealDB for data storage and AI-powered features.",
+    "logo": "open_notebook.svg",
+    "links": {
+      "github": "https://github.com/lfnovo/open_notebook",
+      "website": "https://www.open-notebook.ai/",
+      "docs": "https://www.open-notebook.ai/get-started.html"
+    },
+    "tags": ["notebook", "ai", "database", "surrealdb"]
+  },
+  {
+    "id": "booklore",
+    "name": "Booklore",
+    "version": "latest",
+    "description": "Booklore is an application for managing and serving book-related data, backed by a MariaDB database.",
+    "logo": "image.png",
+    "links": {
+      "github": "https://github.com/booklore-app/BookLore",
+      "website": "https://github.com/booklore-app/BookLore",
+      "docs": "https://github.com/booklore-app/BookLore/tree/develop/docs"
+    },
+    "tags": ["books", "library", "database", "mariadb"]
+  },
+  {
+    "id": "scrypted",
+    "name": "Scrypted",
+    "version": "latest",
+    "description": "Scrypted is a home automation platform that integrates with various smart home devices and provides NVR capabilities for video surveillance.",
+    "logo": "image.png",
+    "links": {
+      "github": "https://github.com/koush/scrypted",
+      "website": "https://www.scrypted.app/",
+      "docs": "https://docs.scrypted.app/"
+    },
+    "tags": ["home-automation", "nvr", "smart-home", "surveillance"]
   }
 ]
