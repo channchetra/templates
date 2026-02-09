@@ -1,0 +1,58 @@
+services:
+  wordpress-openlitespeed:
+    image: litespeedtech/openlitespeed:1.8.5-lsphp83
+    restart: unless-stopped
+    entrypoint: ["/bin/bash", "-c", "sed 's/\\r$//' /opt/wp-entrypoint.sh > /tmp/wp-entrypoint.sh && chmod +x /tmp/wp-entrypoint.sh && exec /bin/bash /tmp/wp-entrypoint.sh"]
+    environment:
+      MYSQL_HOST: mariadb
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+      REDIS_HOST: redis
+    volumes:
+      - lsws_conf:/usr/local/lsws/conf
+      - lsws_admin:/usr/local/lsws/admin/conf
+      - sites:/var/www/vhosts
+      - ../files/wp-entrypoint.sh:/opt/wp-entrypoint.sh
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  mariadb:
+    image: mariadb:11.7
+    restart: unless-stopped
+    command: ["--max-allowed-packet=512M"]
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh --connect --innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  redis:
+    image: redis:7.4-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  lsws_conf:
+  lsws_admin:
+  sites:
+  db_data:
+  redis_data:

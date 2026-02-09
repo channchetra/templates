@@ -1,0 +1,158 @@
+[variables]
+main_domain = "${domain}"
+db_name = "wordpress"
+db_user = "wordpress"
+db_password = "${password:32}"
+db_root_password = "${password:64}"
+
+[config]
+env = [
+  "DB_NAME=${db_name}",
+  "DB_USER=${db_user}",
+  "DB_PASSWORD=${db_password}",
+  "DB_ROOT_PASSWORD=${db_root_password}"
+]
+
+[[config.domains]]
+serviceName = "wordpress-openlitespeed"
+port = 80
+host = "${main_domain}"
+
+[[config.mounts]]
+filePath = "wp-entrypoint.sh"
+content = """#!/bin/bash
+set -e
+
+# ---------------------------------------------------
+# Restore default OLS config if volumes are empty
+# ---------------------------------------------------
+if [ -z "$(ls -A -- /usr/local/lsws/conf/)" ]; then
+    cp -R /usr/local/lsws/.conf/* /usr/local/lsws/conf/
+fi
+if [ -z "$(ls -A -- /usr/local/lsws/admin/conf/)" ]; then
+    cp -R /usr/local/lsws/admin/.conf/* /usr/local/lsws/admin/conf/
+fi
+chown 994:994 /usr/local/lsws/conf -R
+chown 994:1001 /usr/local/lsws/admin/conf -R
+
+WP_ROOT="/var/www/vhosts/localhost/html"
+
+# ---------------------------------------------------
+# Wait for MariaDB
+# ---------------------------------------------------
+echo "Waiting for MariaDB..."
+COUNTER=0
+while ! mysqladmin ping -h"${MYSQL_HOST}" --silent 2>/dev/null; do
+    COUNTER=$((COUNTER+1))
+    if [ ${COUNTER} -ge 60 ]; then
+        echo "MariaDB connection timeout, continuing..."
+        break
+    fi
+    sleep 2
+done
+echo "MariaDB is ready."
+
+# ---------------------------------------------------
+# Download WordPress if not present
+# ---------------------------------------------------
+if [ ! -f "${WP_ROOT}/wp-config.php" ] && [ ! -f "${WP_ROOT}/wp-config-sample.php" ]; then
+    echo "Downloading WordPress..."
+    mkdir -p "${WP_ROOT}"
+    cd "${WP_ROOT}"
+    wp core download --allow-root --quiet 2>/dev/null || {
+        echo "WP-CLI failed, falling back to curl..."
+        cd /tmp
+        curl -sO https://wordpress.org/latest.tar.gz
+        tar -xzf latest.tar.gz
+        cp -a wordpress/. "${WP_ROOT}/"
+        rm -rf latest.tar.gz wordpress
+    }
+    chown -R nobody:nogroup /var/www/vhosts/localhost
+    echo "WordPress downloaded successfully."
+fi
+
+# ---------------------------------------------------
+# Create wp-config.php
+# ---------------------------------------------------
+if [ ! -f "${WP_ROOT}/wp-config.php" ] && [ -f "${WP_ROOT}/wp-config-sample.php" ]; then
+    echo "Creating wp-config.php..."
+    cp "${WP_ROOT}/wp-config-sample.php" "${WP_ROOT}/wp-config.php"
+
+    sed -i "s/database_name_here/${MYSQL_DATABASE}/" "${WP_ROOT}/wp-config.php"
+    sed -i "s/username_here/${MYSQL_USER}/" "${WP_ROOT}/wp-config.php"
+    sed -i "s/password_here/${MYSQL_PASSWORD}/" "${WP_ROOT}/wp-config.php"
+    sed -i "s/localhost/${MYSQL_HOST}/" "${WP_ROOT}/wp-config.php"
+
+    SALT=$(curl -sS https://api.wordpress.org/secret-key/1.1/salt/ 2>/dev/null)
+    if [ -n "${SALT}" ]; then
+        STRING='put your unique phrase here'
+        printf '%s\\n' "g/${STRING}/d" a "${SALT}" . w | ed -s "${WP_ROOT}/wp-config.php" 2>/dev/null || true
+    fi
+
+    # Redis object cache
+    sed -i "/\/\* That's all, stop editing/i define('WP_REDIS_HOST', '${REDIS_HOST}');\ndefine('WP_REDIS_PORT', 6379);" "${WP_ROOT}/wp-config.php"
+
+    # Reverse proxy support (Dokploy/Traefik) - must be BEFORE wp-settings.php loads
+    sed -i "/\/\* That's all, stop editing/i \/** Reverse proxy \/ Traefik support *\/\nif (isset(\\\$_SERVER['HTTP_X_FORWARDED_PROTO']) \&\& \\\$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') { \\\$_SERVER['HTTPS'] = 'on'; }\nif (isset(\\\$_SERVER['HTTP_X_FORWARDED_HOST'])) { \\\$_SERVER['HTTP_HOST'] = \\\$_SERVER['HTTP_X_FORWARDED_HOST']; }\nif (isset(\\\$_SERVER['HTTP_X_REAL_IP'])) { \\\$_SERVER['REMOTE_ADDR'] = \\\$_SERVER['HTTP_X_REAL_IP']; }\ndefine('FORCE_SSL_ADMIN', false);\n" "${WP_ROOT}/wp-config.php"
+
+    chown nobody:nogroup "${WP_ROOT}/wp-config.php"
+    echo "wp-config.php configured."
+fi
+
+# ---------------------------------------------------
+# Create .htaccess for WordPress permalinks & REST API
+# ---------------------------------------------------
+if [ ! -f "${WP_ROOT}/.htaccess" ]; then
+    cat > "${WP_ROOT}/.htaccess" << 'HTEOF'
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+HTEOF
+    chown nobody:nogroup "${WP_ROOT}/.htaccess"
+    echo ".htaccess created."
+fi
+
+# ---------------------------------------------------
+# Patch existing wp-config.php for reverse proxy
+# (runs on restarts for already-deployed sites)
+# ---------------------------------------------------
+if [ -f "${WP_ROOT}/wp-config.php" ] && ! grep -q 'HTTP_X_FORWARDED_PROTO' "${WP_ROOT}/wp-config.php" 2>/dev/null; then
+    sed -i "/\/\* That's all, stop editing/i \/** Reverse proxy \/ Traefik support *\/\nif (isset(\\\$_SERVER['HTTP_X_FORWARDED_PROTO']) \&\& \\\$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') { \\\$_SERVER['HTTPS'] = 'on'; }\nif (isset(\\\$_SERVER['HTTP_X_FORWARDED_HOST'])) { \\\$_SERVER['HTTP_HOST'] = \\\$_SERVER['HTTP_X_FORWARDED_HOST']; }\nif (isset(\\\$_SERVER['HTTP_X_REAL_IP'])) { \\\$_SERVER['REMOTE_ADDR'] = \\\$_SERVER['HTTP_X_REAL_IP']; }\ndefine('FORCE_SSL_ADMIN', false);\n" "${WP_ROOT}/wp-config.php"
+    chown nobody:nogroup "${WP_ROOT}/wp-config.php"
+    echo "Patched existing wp-config.php with reverse proxy support."
+fi
+
+# ---------------------------------------------------
+# Configure LiteSpeed Cache for Redis object cache
+# ---------------------------------------------------
+LSC_CONST="${WP_ROOT}/wp-content/plugins/litespeed-cache/data/const.default.json"
+if [ -f "${LSC_CONST}" ]; then
+    sed -i 's/"object": .*"/"object": "true"/' "${LSC_CONST}"
+    sed -i 's/"object-kind": .*"/"object-kind": "true"/' "${LSC_CONST}"
+    sed -i 's/"object-host": .*"/"object-host": "redis"/' "${LSC_CONST}"
+    sed -i 's/"object-port": .*"/"object-port": "6379"/' "${LSC_CONST}"
+    echo "LiteSpeed Cache configured for Redis."
+fi
+
+# ---------------------------------------------------
+# Start OpenLiteSpeed
+# ---------------------------------------------------
+echo "Starting OpenLiteSpeed..."
+/usr/local/lsws/bin/lswsctrl start
+"$@"
+
+while true; do
+    if ! /usr/local/lsws/bin/lswsctrl status | /usr/bin/grep 'litespeed is running with PID *' > /dev/null; then
+        break
+    fi
+    sleep 60
+done
+"""

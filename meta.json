@@ -6382,6 +6382,23 @@
     ]
   },
   {
+    "id": "wordpress-openlitespeed",
+    "name": "WordPress (OpenLiteSpeed)",
+    "version": "1.8.5-lsphp83",
+    "description": "WordPress with OpenLiteSpeed high-performance web server, MariaDB, and LiteSpeed Cache support for blazing-fast sites.",
+    "logo": "wordpress.png",
+    "links": {
+      "github": "https://github.com/litespeedtech/ols-docker-env",
+      "website": "https://openlitespeed.org/",
+      "docs": "https://openlitespeed.org/kb/"
+    },
+    "tags": [
+      "cms",
+      "blogging",
+      "web-server"
+    ]
+  },
+  {
     "id": "xsshunter",
     "name": "XSSHunter",
     "version": "latest",
