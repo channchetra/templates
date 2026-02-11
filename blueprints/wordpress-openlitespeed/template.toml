@@ -10,7 +10,8 @@ env = [
   "DB_NAME=${db_name}",
   "DB_USER=${db_user}",
   "DB_PASSWORD=${db_password}",
-  "DB_ROOT_PASSWORD=${db_root_password}"
+  "DB_ROOT_PASSWORD=${db_root_password}",
+  "WP_DEBUG=false"
 ]
 
 [[config.domains]]
@@ -36,6 +37,25 @@ chown 994:994 /usr/local/lsws/conf -R
 chown 994:1001 /usr/local/lsws/admin/conf -R
 
 WP_ROOT="/var/www/vhosts/localhost/html"
+
+# ---------------------------------------------------
+# Install WP-CLI if not present
+# ---------------------------------------------------
+if [ ! -f /usr/local/bin/wp ]; then
+    echo "Installing WP-CLI..."
+    curl -sO https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    chmod +x wp-cli.phar
+    mv wp-cli.phar /usr/local/bin/wp
+    echo "WP-CLI installed."
+fi
+# Allow WP-CLI to run as root without --allow-root flag
+mkdir -p /root/.wp-cli
+cat > /root/.wp-cli/config.yml << 'WPCLIEOF'
+path: /var/www/vhosts/localhost/html
+apache_modules:
+  - mod_rewrite
+WPCLIEOF
+export WP_CLI_ALLOW_ROOT=1
 
 # ---------------------------------------------------
 # Wait for MariaDB
@@ -90,10 +110,44 @@ if [ ! -f "${WP_ROOT}/wp-config.php" ] && [ -f "${WP_ROOT}/wp-config-sample.php"
     fi
 
     # Redis object cache
-    sed -i "/\/\* That's all, stop editing/i define('WP_REDIS_HOST', '${REDIS_HOST}');\ndefine('WP_REDIS_PORT', 6379);" "${WP_ROOT}/wp-config.php"
+    sed -i "/\/\* That's all, stop editing/i define('WP_REDIS_HOST', '${REDIS_HOST}');" "${WP_ROOT}/wp-config.php"
+    sed -i "/\/\* That's all, stop editing/i define('WP_REDIS_PORT', 6379);" "${WP_ROOT}/wp-config.php"
+
+    # WordPress performance & security settings
+    sed -i "/\/\* That's all, stop editing/i define('WP_MEMORY_LIMIT', '256M');" "${WP_ROOT}/wp-config.php"
+    sed -i "/\/\* That's all, stop editing/i define('WP_MAX_MEMORY_LIMIT', '512M');" "${WP_ROOT}/wp-config.php"
+    sed -i "/\/\* That's all, stop editing/i define('DISALLOW_FILE_EDIT', true);" "${WP_ROOT}/wp-config.php"
+    sed -i "/\/\* That's all, stop editing/i define('WP_AUTO_UPDATE_CORE', 'minor');" "${WP_ROOT}/wp-config.php"
+    sed -i "/\/\* That's all, stop editing/i define('WP_POST_REVISIONS', 10);" "${WP_ROOT}/wp-config.php"
+    sed -i "/\/\* That's all, stop editing/i define('AUTOSAVE_INTERVAL', 120);" "${WP_ROOT}/wp-config.php"
+    sed -i "/\/\* That's all, stop editing/i define('EMPTY_TRASH_DAYS', 15);" "${WP_ROOT}/wp-config.php"
+
+    # WordPress debug settings (controlled by WP_DEBUG env var)
+    if [ "${WP_DEBUG}" = "true" ]; then
+        sed -i "s/define( *'WP_DEBUG'.*/define('WP_DEBUG', true);/" "${WP_ROOT}/wp-config.php"
+        sed -i "/\/\* That's all, stop editing/i define('WP_DEBUG_LOG', true);" "${WP_ROOT}/wp-config.php"
+        sed -i "/\/\* That's all, stop editing/i define('WP_DEBUG_DISPLAY', false);" "${WP_ROOT}/wp-config.php"
+        sed -i "/\/\* That's all, stop editing/i define('SCRIPT_DEBUG', true);" "${WP_ROOT}/wp-config.php"
+        echo "WP_DEBUG enabled (logs to wp-content/debug.log)."
+    fi
 
     # Reverse proxy support (Dokploy/Traefik) - must be BEFORE wp-settings.php loads
-    sed -i "/\/\* That's all, stop editing/i \/** Reverse proxy \/ Traefik support *\/\nif (isset(\\\$_SERVER['HTTP_X_FORWARDED_PROTO']) \&\& \\\$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') { \\\$_SERVER['HTTPS'] = 'on'; }\nif (isset(\\\$_SERVER['HTTP_X_FORWARDED_HOST'])) { \\\$_SERVER['HTTP_HOST'] = \\\$_SERVER['HTTP_X_FORWARDED_HOST']; }\nif (isset(\\\$_SERVER['HTTP_X_REAL_IP'])) { \\\$_SERVER['REMOTE_ADDR'] = \\\$_SERVER['HTTP_X_REAL_IP']; }\ndefine('FORCE_SSL_ADMIN', false);\n" "${WP_ROOT}/wp-config.php"
+    cat > "${WP_ROOT}/wp-proxy-config.php" << 'PROXYEOF'
+<?php
+/** Reverse proxy / Traefik support */
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+}
+if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+    $_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+}
+if (isset($_SERVER['HTTP_X_REAL_IP'])) {
+    $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_REAL_IP'];
+}
+define('FORCE_SSL_ADMIN', false);
+PROXYEOF
+    chown nobody:nogroup "${WP_ROOT}/wp-proxy-config.php"
+    sed -i "/\/\* That's all, stop editing/i require_once(__DIR__ . '\/wp-proxy-config.php');" "${WP_ROOT}/wp-config.php"
 
     chown nobody:nogroup "${WP_ROOT}/wp-config.php"
     echo "wp-config.php configured."
@@ -124,10 +178,28 @@ fi
 # Patch existing wp-config.php for reverse proxy
 # (runs on restarts for already-deployed sites)
 # ---------------------------------------------------
-if [ -f "${WP_ROOT}/wp-config.php" ] && ! grep -q 'HTTP_X_FORWARDED_PROTO' "${WP_ROOT}/wp-config.php" 2>/dev/null; then
-    sed -i "/\/\* That's all, stop editing/i \/** Reverse proxy \/ Traefik support *\/\nif (isset(\\\$_SERVER['HTTP_X_FORWARDED_PROTO']) \&\& \\\$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') { \\\$_SERVER['HTTPS'] = 'on'; }\nif (isset(\\\$_SERVER['HTTP_X_FORWARDED_HOST'])) { \\\$_SERVER['HTTP_HOST'] = \\\$_SERVER['HTTP_X_FORWARDED_HOST']; }\nif (isset(\\\$_SERVER['HTTP_X_REAL_IP'])) { \\\$_SERVER['REMOTE_ADDR'] = \\\$_SERVER['HTTP_X_REAL_IP']; }\ndefine('FORCE_SSL_ADMIN', false);\n" "${WP_ROOT}/wp-config.php"
+if [ ! -f "${WP_ROOT}/wp-proxy-config.php" ]; then
+    cat > "${WP_ROOT}/wp-proxy-config.php" << 'PROXYEOF'
+<?php
+/** Reverse proxy / Traefik support */
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+}
+if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+    $_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+}
+if (isset($_SERVER['HTTP_X_REAL_IP'])) {
+    $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_REAL_IP'];
+}
+define('FORCE_SSL_ADMIN', false);
+PROXYEOF
+    chown nobody:nogroup "${WP_ROOT}/wp-proxy-config.php"
+    echo "Created wp-proxy-config.php."
+fi
+if [ -f "${WP_ROOT}/wp-config.php" ] && ! grep -q 'wp-proxy-config.php' "${WP_ROOT}/wp-config.php" 2>/dev/null; then
+    sed -i "/\/\* That's all, stop editing/i require_once(__DIR__ . '\/wp-proxy-config.php');" "${WP_ROOT}/wp-config.php"
     chown nobody:nogroup "${WP_ROOT}/wp-config.php"
-    echo "Patched existing wp-config.php with reverse proxy support."
+    echo "Patched existing wp-config.php with proxy config include."
 fi
 
 # ---------------------------------------------------

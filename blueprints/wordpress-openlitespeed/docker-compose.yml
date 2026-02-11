@@ -9,6 +9,8 @@ services:
       MYSQL_USER: $DB_USER
       MYSQL_PASSWORD: $DB_PASSWORD
       REDIS_HOST: redis
+      WP_CLI_ALLOW_ROOT: "1"
+      WP_DEBUG: ${WP_DEBUG:-false}
     volumes:
       - lsws_conf:/usr/local/lsws/conf
       - lsws_admin:/usr/local/lsws/admin/conf
